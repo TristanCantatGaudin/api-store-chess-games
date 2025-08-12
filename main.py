@@ -21,12 +21,29 @@ def root():
     return {"Hello": "World"}
 
 # Appending (regardless of whether the item already exists) is a POST request.
-@app.post("/games", response_model=list[GameItem])
+@app.post("/manual_add_game")
+def add_game_manually_nonpersist(PGN: str, lichessId: str = None):
+    """
+    For testing. Adds games to a temporary list. Storage does not persist over restarts.
+    Parameters can be parsed in URL, e.g.:
+    curl -X 'POST' \
+  'http://127.0.0.1:8000/manual_add_game?PGN=1.%20e4%20e5&lichessId=abc123' \
+  -H 'accept: application/json' \
+  -d ''
+    Games are stored as a two-key dictionary.
+    Returns the full list (including the last game added).
+    """
+    all_games.append({"PGN":PGN, "lichessId":lichessId})
+    return all_games
+
+@app.post("/add_game", response_model=list[GameItem])
 def add_game_nonpersist(item: GameItem) -> list[GameItem]:
     """
     For testing. Adds games to a temporary list. Storage does not persist over restarts.
     The input has to be passed as a JSON payload.
+    Games are stored and returned as pydantic objects.
     Returns the full list (including the last game added).
     """
     all_games.append(item)
     return all_games
+
