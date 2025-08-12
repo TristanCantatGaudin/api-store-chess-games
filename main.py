@@ -30,10 +30,7 @@ def add_game_manually_nonpersist(PGN: str, lichessId: str = None):
     """
     For testing. Adds games to a temporary list. Storage does not persist over restarts.
     Parameters can be parsed in URL, e.g.:
-    curl -X 'POST' \
-  'http://127.0.0.1:8000/manual_add_game?PGN=1.%20e4%20e5&lichessId=abc123' \
-  -H 'accept: application/json' \
-  -d ''
+    `curl -X 'POST' 'http://127.0.0.1:8000/manual_add_game?PGN=1.%20e4%20e5&lichessId=abc123'`
     Games are stored as a two-key dictionary.
     Returns the full list (including the last game added).
     """
