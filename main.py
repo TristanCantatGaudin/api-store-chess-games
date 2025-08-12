@@ -12,6 +12,10 @@ class GameItem(BaseModel):
     WhiteElo: int = None
     BlackElo: int = None
     Opening: str = None
+# Note: some static typecheckers like mypy would prefer us to import Optional:
+#   from typing import Optional
+# and write optional arguments as:
+#   lichessId: Optional[str] = None
 
 
 app = FastAPI()
