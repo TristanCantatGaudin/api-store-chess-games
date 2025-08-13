@@ -7,6 +7,8 @@ Add a game, with data given as parameters in the URL, e.g.:
     curl -X 'POST' \
       'http://127.0.0.1:8000/manual_add_game?PGN=aaaa&lichessId=zzzz' 
 
+In this example implementation the games are only stored as a two-key dictionary.
+
 ### POST on `add_game`
 
 Add a game, with data passed as a JSON payload:
@@ -24,7 +26,12 @@ Add a game, with data passed as a JSON payload:
       "Opening": "string"
     }'
 
-This one uses pydantic, with all arguments optional except the PGN string.
+This one uses pydantic, with all arguments optional except the PGN string. 
+Internally, a `date_added` field is then automatically added, but can't be set manually.
+
+### POST on `add_game_from_lichess`
+
+One single argument, fetches a game from lichess and parses it into our pydantic model.
 
 ## Usage
 
