@@ -35,7 +35,7 @@ def test_add_game():
     json_data = response.json()
     assert isinstance(json_data, list)
     assert json_data[-1]["PGN"] == "1. d4 d5"
-    assert json_data[-1]["White"] == "Alice
+    assert json_data[-1]["White"] == "Alice"
 
 
 # Testing the method that makes a live call to the lichess API is also possible.
