@@ -12,7 +12,12 @@ games_as_dicts = [] # for our dummy manual_add_game to store dicts
 all_game_items: list[GameItem] = [] # for methods storing game items
 
 # Create the table if it doesn't exist:
-Base.metadata.create_all(bind=engine)
+import logging
+from sqlalchemy.exc import OperationalError
+try:
+    Base.metadata.create_all(bind=engine)
+except OperationalError as e:
+    logging.warning(f"Skipping DB table creation due to connection error: {e}")
 
 app = FastAPI()
 
