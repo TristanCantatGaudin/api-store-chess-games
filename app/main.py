@@ -1,33 +1,11 @@
 from fastapi import FastAPI
-from datetime import datetime
-from pydantic import BaseModel, Field
 import httpx
-
-all_games = []
-
-
-# Use a pydantic object instead of a basic Python dictionary.
-# User-facing input model: this is what can be sent to the API.
-class GameItemInput(BaseModel):
-    lichessId: str = None
-    PGN: str
-    White: str = None
-    Black: str = None
-    WhiteElo: int = None
-    BlackElo: int = None
-    Opening: str = None
+from .models import GameItemInput, GameItem
 
 
-# Internal/output model: this is what is stored and returned.
-class GameItem(GameItemInput):
-    date_added: datetime = Field(default_factory=datetime.utcnow)
-
-
-# Note: some static typecheckers like mypy would prefer us to import Optional:
-#   from typing import Optional
-# and write optional arguments as:
-#   lichessId: Optional[str] = None
-
+# In-memory storage:
+games_as_dicts = [] # for our dummy manual_add_game to store dicts
+all_game_items: list[GameItem] = [] # for methods storing game items
 
 app = FastAPI()
 
@@ -47,8 +25,8 @@ def add_game_manually_nonpersist(PGN: str, lichessId: str = None):
     Games are stored as a two-key dictionary.
     Returns the full list (including the last game added).
     """
-    all_games.append({"PGN": PGN, "lichessId": lichessId})
-    return all_games
+    games_as_dicts.append({"PGN": PGN, "lichessId": lichessId})
+    return games_as_dicts
 
 
 @app.post("/add_game", response_model=list[GameItem])
@@ -59,8 +37,8 @@ def add_game_nonpersist(item: GameItemInput) -> list[GameItem]:
     Games are stored and returned as pydantic objects.
     Returns the full list (including the last game added).
     """
-    all_games.append(item)
-    return all_games
+    all_game_items.append(item)
+    return all_game_items
 
 
 @app.post("/add_game_from_lichess", response_model=list[GameItem])
@@ -104,5 +82,5 @@ async def add_game_from_lichess(lichessId: str):
         except Exception as e:
             return {"error": f"Failed to parse game data: {str(e)}"}
 
-        all_games.append(game_item)
-        return all_games
+        all_game_items.append(game_item)
+        return all_game_items

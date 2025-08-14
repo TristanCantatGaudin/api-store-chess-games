@@ -35,7 +35,7 @@ One single argument, fetches a game from lichess and parses it into our pydantic
 
 ## Usage
 
-Start with: `uv run uvicorn main:app --reload`
+Start with: `uv run uvicorn app.main:app --reload`
 
 Verify it is running at http://127.0.0.1:8000/
 
