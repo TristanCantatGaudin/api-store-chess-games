@@ -33,6 +33,14 @@ Internally, a `date_added` field is then automatically added, but can't be set m
 
 One single argument, fetches a game from lichess and parses it into our pydantic model.
 
+### POST on `store_game`
+
+Inserts a game into a postgresql database (provided the lichessID does not already exist).
+
+### GET on `recently_added_games`
+
+Retrieve the last N games from the database.
+
 ## Usage
 
 Start with: `uv run uvicorn app.main:app --reload`
@@ -44,3 +52,16 @@ Documentation at http://127.0.0.1:8000/redoc
 Swagger UI at http://127.0.0.1:8000/docs
 
 Test with `PYTHONPATH=. uv run pytest -v`
+
+## Notes on containerisation
+
+Instead of spinning up the postgresql container and then starting the app, we could have both of them containerised together.
+
+This requires adding a "app" section to the `docker-compose.yml` file. We can also add
+
+    environment:
+      DATABASE_URL: postgresql://tristan:hunter2@db:5432/maydatabase
+
+and have `db.py` read it with `os.getenv()` instead of having it hard-coded.
+
+We would also need a `Dockerfile` to build the app itself.
