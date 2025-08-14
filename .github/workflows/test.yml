@@ -24,7 +24,7 @@ jobs:
       run: |
         uv venv .venv
         source .venv/bin/activate
-        uv pip install --group default
+        uv pip install
 
     - name: Run tests
       run: |
