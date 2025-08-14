@@ -27,6 +27,8 @@ jobs:
         uv pip install --requirements pyproject.toml
 
     - name: Run tests
+      env:
+        PYTHONPATH: .
       run: |
         source .venv/bin/activate
         pytest tests/
