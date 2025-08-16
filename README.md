@@ -1,3 +1,5 @@
+Example FastAPI app implementing different types of requests, validation, automated testing, and storing/retrieving data from a postgresql database.
+
 This API has the following routes and methods:
 
 ### POST on `manual_add_game`
@@ -57,7 +59,7 @@ Test with `PYTHONPATH=. uv run pytest -v`
 
 Instead of spinning up the postgresql container and then starting the app, we could have both of them containerised together.
 
-This requires adding a "app" section to the `docker-compose.yml` file. We can also add
+This requires adding an "app" section to the `docker-compose.yml` file. We can also add
 
     environment:
       DATABASE_URL: postgresql://tristan:hunter2@db:5432/maydatabase
